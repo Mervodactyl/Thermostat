@@ -41,18 +41,56 @@ describe("Thermostat", function() {
     });
 
     it('when psm is off, maximum temp is 32 degrees', function() {
-      thermostat.powerSavingMode = false
+      thermostat.powerSavingMode = false;
       thermostat.temperature = 32;
       thermostat.increaseTemperature();
       expect(thermostat.temperature).toEqual(32);
     });
 
     it('can raise the temperature above 25 degrees when psm is off', function() {
-      thermostat.powerSavingMode = false
+      thermostat.powerSavingMode = false;
       thermostat.temperature = 25;
       thermostat.increaseTemperature();
       expect(thermostat.temperature).toEqual(26);
     });
   });
+
+  describe('general settings', function() {
+    it('should be able to reset itself to 20', function () {
+      thermostat.temperature = 23;
+      thermostat.resetTemperature();
+      expect(thermostat.temperature).toEqual(20);
+    });
+
+    it('should turn psm on when it resets', function () {
+      thermostat.powerSavingMode = false;
+      thermostat.resetTemperature();
+      expect(thermostat.powerSavingMode).toEqual(true);
+    });
+  });
+
+  describe('energy usage and color graph', function () {
+    it('should change it energy level to "very good" when temperature is less than 18 degrees', function () {
+      thermostat.temperature = 17;
+      expect(thermostat.efficiency()).toEqual('very good');
+    });
+
+    it('should change it energy level to "good" when temperature is less than 25 degrees', function () {
+      expect(thermostat.efficiency()).toEqual('good');
+    });
+
+    it('should change it energy level to "poor" when temperature is more than 25 degrees', function () {
+      thermostat.temperature = 25;
+      expect(thermostat.efficiency()).toEqual('poor');
+    });
+  });
 });
+
+
+
+
+
+
+
+
 

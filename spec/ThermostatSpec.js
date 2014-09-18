@@ -41,14 +41,14 @@ describe("Thermostat", function() {
     });
 
     it('when psm is off, maximum temp is 32 degrees', function() {
-      thermostat.powerSavingMode = false;
+      thermostat.togglePowerSavingMode();
       thermostat.temperature = 32;
       thermostat.increaseTemperature();
       expect(thermostat.temperature).toEqual(32);
     });
 
     it('can raise the temperature above 25 degrees when psm is off', function() {
-      thermostat.powerSavingMode = false;
+      thermostat.togglePowerSavingMode();
       thermostat.temperature = 25;
       thermostat.increaseTemperature();
       expect(thermostat.temperature).toEqual(26);
@@ -56,6 +56,12 @@ describe("Thermostat", function() {
   });
 
   describe('general settings', function() {
+
+    it('has a toggle to set psm', function() {
+      thermostat.togglePowerSavingMode();
+      expect(thermostat.powerSavingMode).toEqual(false);
+    });
+
     it('should be able to reset itself to 20', function () {
       thermostat.temperature = 23;
       thermostat.resetTemperature();
